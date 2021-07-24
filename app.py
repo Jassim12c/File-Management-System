@@ -30,12 +30,14 @@ class FileManagerInterface:
         self.build_grid()
         self.build_banner()
         self.build_drives_rows()
+        self.build_instruction()
 
     def build_grid(self):
         self.mainframe.columnconfigure(0, weight=1)
         self.mainframe.columnconfigure(1, weight=2)
         self.mainframe.columnconfigure(2, weight=1)
         self.mainframe.rowconfigure(0, weight=2)
+        self.mainframe.rowconfigure(1, weight=2)
 
     def build_banner(self):
         banner = tk.Label(
@@ -59,14 +61,14 @@ class FileManagerInterface:
 
         row = 0
 
-        for driver in get_drives():
+        for drive in get_drives():
             row += 1
 
             self.mainframe.rowconfigure(row, weight=1)
 
             text = tk.Button(
                 self.mainframe,
-                text=driver,
+                text=drive,
                 bg="black",
                 fg="white",
                 font=('Helvetica', 18, 'bold'),
@@ -78,6 +80,21 @@ class FileManagerInterface:
                 padx=10, pady=10,
             )
 
+    def build_instruction(self):
+        """"""
+        instruction = tk.Label(
+            self.mainframe,
+            text="* Choose one of the drives:",
+            fg="linen",
+            bg="black",
+            font=('Times', 13, "italic")
+        )
+
+        instruction.grid(
+            row=1, column=0,
+            sticky="N",
+        )
+        
 
 if __name__ == "__main__":
     root = tk.Tk()
