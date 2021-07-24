@@ -1,8 +1,9 @@
 import string
 import tkinter as tk
 
+from tkinter import filedialog
 from ctypes import windll
-
+from PIL import ImageTk, Image
 
 def get_drives() -> list:
     """ This function gets all the drives on this device """
@@ -31,6 +32,7 @@ class FileManagerInterface:
         self.build_banner()
         self.build_drives_rows()
         self.build_instruction()
+        self.add_image()
 
     def build_grid(self):
         self.mainframe.columnconfigure(0, weight=1)
@@ -38,6 +40,14 @@ class FileManagerInterface:
         self.mainframe.columnconfigure(2, weight=1)
         self.mainframe.rowconfigure(0, weight=2)
         self.mainframe.rowconfigure(1, weight=2)
+
+    def add_image(self):
+        open_image = Image.open('logo_file.png')
+        open_image = open_image.resize((20, 40), Image.ANTIALIAS)
+        render = ImageTk.PhotoImage(open_image)
+        img = tk.Label(self.mainframe, image=render, bg="black")
+        img.image = render
+        img.grid(row=0, column=0, sticky="nw")
 
     def build_banner(self):
         banner = tk.Label(
@@ -81,7 +91,7 @@ class FileManagerInterface:
             )
 
     def build_instruction(self):
-        """"""
+        """Instructions for using the software"""
         instruction = tk.Label(
             self.mainframe,
             text="* Choose one of the drives:",
@@ -99,6 +109,5 @@ class FileManagerInterface:
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("File Management")
-    root.resizable(False, False)
     FileManagerInterface(root)
     root.mainloop()
