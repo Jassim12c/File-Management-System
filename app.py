@@ -19,7 +19,6 @@ def get_drives() -> list:
     return drives
 
 
-# TODO: add back button
 # TODO: add breadcrumbs
 # TODO: add minor instructions
 # TODO: add CRUD + Move operations
@@ -169,14 +168,14 @@ class InsideDrive(FileManagerInterface):
             bg="black",
             fg="white",
             font=('Helvetica', 12, 'bold'),
-            command=self.back_logic,
+            command=self.back_logic_button,
         )
 
         back_button.grid(
             row=0, column=0,
         )
 
-    def back_logic(self):
+    def back_logic_button(self):
         """Goes back to the main Window"""
         self.master.destroy()
         self.master = tk.Tk()
