@@ -1,5 +1,6 @@
 import string
 import tkinter as tk
+import os
 
 from tkinter import filedialog
 from ctypes import windll
@@ -21,6 +22,7 @@ def get_drives() -> list:
 # TODO: add back button
 # TODO: add breadcrumbs
 # TODO: add minor instructions
+# TODO: add CRUD + Move operations
 
 class FileManagerInterface:
 
@@ -69,7 +71,7 @@ class FileManagerInterface:
             padx=10, pady=10,
         )
 
-    # TODO: Move the user inside the drive when they choose the drive
+    # TODO: print all the files and operations
     def get_all_drives_buttons(self):
         """Gets all drives on the device and creates buttons for each one"""
 
@@ -106,6 +108,7 @@ class FileManagerInterface:
     def drive_btn_click(self, key_id):
         """Navigates inside the clicked on drive and opens a new window"""
         if key_id in get_drives():
+            print(os.listdir("{}:/".format(key_id)))
             self.master.destroy()
             self.master = tk.Tk()
             self.app = InsideDrive(self.master)
@@ -133,6 +136,7 @@ class InsideDrive(FileManagerInterface):
         self.get_all_drives_buttons()
         self.build_instruction()
         self.create_drive_buttons()
+        self.create_back_button()
 
     # Override
     def get_all_drives_buttons(self):
@@ -140,6 +144,7 @@ class InsideDrive(FileManagerInterface):
 
     # Override
     def build_instruction(self):
+        """Overrides the previous instructions and updates them to fit the current window's criteria"""
         instruction = tk.Label(
             self.mainframe,
             text="* Choose one of the Operations then/or \n* Choose one of the files",
@@ -153,10 +158,30 @@ class InsideDrive(FileManagerInterface):
             sticky="N",
         )
 
-    # Override 
+    # Override
     def create_drive_buttons(self):
         pass
 
+    def create_back_button(self):
+        back_button = tk.Button(
+            self.mainframe,
+            text="Back",
+            bg="black",
+            fg="white",
+            font=('Helvetica', 12, 'bold'),
+            command=self.back_logic,
+        )
+
+        back_button.grid(
+            row=0, column=0,
+        )
+
+    def back_logic(self):
+        """Goes back to the main Window"""
+        self.master.destroy()
+        self.master = tk.Tk()
+        self.app = FileManagerInterface(self.master)
+        self.master.mainloop()
 
 if __name__ == "__main__":
     # Main Window
