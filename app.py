@@ -22,10 +22,15 @@ def get_drives() -> list:
 # TODO: add breadcrumbs
 # TODO: add minor instructions
 # TODO: add CRUD + Move operations
+# TODO: When user clicks on a drive,
+#  open the file explorer.
+#  Let them choose the file.
+#  Then using the app they can choose the operation
 
 class FileManagerInterface:
 
     def __init__(self, master):
+        self.row = 0
         self.master = master
         self.mainframe = tk.Frame(self.master, background="black")
         self.mainframe.pack(fill=tk.BOTH, expand=True)
@@ -38,6 +43,7 @@ class FileManagerInterface:
         self.get_all_drives_buttons()
         self.build_instruction()
         self.create_drive_buttons()
+        self.build_desktop_btn()
 
     def build_grid(self):
         """Builds the essential grid"""
@@ -93,14 +99,13 @@ class FileManagerInterface:
         """Puts each drive in its respective row and assigns the button command property to drive_btn_click()"""
         drive_dict = self.get_all_drives_buttons()
 
-        row = 0
         for key, value in drive_dict.items():
-            row += 1
-            self.mainframe.rowconfigure(row, weight=1)
+            self.row += 1
+            self.mainframe.rowconfigure(self.row, weight=1)
             btn = drive_dict[key]
             btn['command'] = lambda k=key: self.drive_btn_click(k)
             btn.grid(
-                row=row, column=1,
+                row=self.row, column=1,
                 padx=10, pady=10,
             )
 
@@ -127,6 +132,28 @@ class FileManagerInterface:
             row=1, column=0,
             sticky="N",
         )
+
+    def build_desktop_btn(self):
+        """Shortcut to desktop button"""
+        desktop_btn = tk.Button(
+            self.mainframe,
+            text="Desktop",
+            fg="tomato2",
+            bg="black",
+            font=('Roman', 15, "bold"),
+            command=self.desktop_command
+        )
+
+        desktop_btn.grid(
+            row=self.row+1, column=0,
+        )
+
+    def desktop_command(self):
+        desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
+        file = tk.filedialog.askopenfile(initialdir=desktop, title="Select file", filetypes=(
+            ('all files', '*.*'),
+        ))
+        print(file)
 
 class InsideDrive(FileManagerInterface):
     def __init__(self, master):
