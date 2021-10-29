@@ -31,6 +31,7 @@ class FileManagerInterface:
 
     def __init__(self, master):
         self.row = 0
+        self.check_click = 1
         self.master = master
         self.mainframe = tk.Frame(self.master, background="black")
         self.mainframe.pack(fill=tk.BOTH, expand=True)
@@ -145,15 +146,18 @@ class FileManagerInterface:
         )
 
         desktop_btn.grid(
-            row=self.row+1, column=0,
+            row=self.row + 1, column=0,
         )
 
     def desktop_command(self):
         desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
-        file = tk.filedialog.askopenfile(initialdir=desktop, title="Select file", filetypes=(
+        self.file = tk.filedialog.askopenfile(initialdir=desktop, title="Select file", filetypes=(
             ('all files', '*.*'),
         ))
-        print(file)
+        self.master.destroy()
+        self.master = tk.Tk()
+        self.app = CRUDOperations(self.master, self.file.name)
+        self.master.mainloop()
 
 class InsideDrive(FileManagerInterface):
     def __init__(self, master):
@@ -208,6 +212,43 @@ class InsideDrive(FileManagerInterface):
         self.master = tk.Tk()
         self.app = FileManagerInterface(self.master)
         self.master.mainloop()
+
+
+class CRUDOperations(FileManagerInterface):
+    def __init__(self, master, main_file):
+        super().__init__(master)
+        print(main_file)
+
+    # Override
+    def get_all_drives_buttons(self):
+        pass
+
+    # Override
+    def build_instruction(self):
+        """Overrides the previous instructions and updates them to fit the current window's criteria"""
+        instruction = tk.Label(
+            self.mainframe,
+            text="* Choose one of the Operations",
+            fg="linen",
+            bg="black",
+            font=('Times', 13, "italic")
+        )
+
+        instruction.grid(
+            row=1, column=0,
+            sticky="N",
+        )
+
+    # Override
+    def create_drive_buttons(self):
+        pass
+
+    def build_desktop_btn(self):
+        pass
+
+    def desktop_command(self):
+        pass
+
 
 if __name__ == "__main__":
     # Main Window
