@@ -149,15 +149,23 @@ class FileManagerInterface:
             row=self.row + 1, column=0,
         )
 
+    # TODO: CRUD operations and Moving files when clicked on
     def desktop_command(self):
+        """Opens a file of choice from the user's desktop"""
         desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
         self.file = tk.filedialog.askopenfile(initialdir=desktop, title="Select file", filetypes=(
             ('all files', '*.*'),
         ))
         self.master.destroy()
         self.master = tk.Tk()
+<<<<<<< HEAD
         self.app = CRUDOperations(self.master, self.file.name)
         self.master.mainloop()
+=======
+        self.app = OpenedFile(self.master, file)
+        self.master.mainloop()
+
+>>>>>>> 82b6712ac0da262f9339640fcda357cc564643bc
 
 class InsideDrive(FileManagerInterface):
     def __init__(self, master):
@@ -177,7 +185,7 @@ class InsideDrive(FileManagerInterface):
         """Overrides the previous instructions and updates them to fit the current window's criteria"""
         instruction = tk.Label(
             self.mainframe,
-            text="* Choose one of the Operations then/or \n* Choose one of the files",
+            text=" * Choose a file \n* Choose one of the Operations",
             fg="linen",
             bg="black",
             font=('Times', 13, "italic")
@@ -193,6 +201,7 @@ class InsideDrive(FileManagerInterface):
         pass
 
     def create_back_button(self):
+        """Creates back button design"""
         back_button = tk.Button(
             self.mainframe,
             text="Back",
@@ -214,10 +223,29 @@ class InsideDrive(FileManagerInterface):
         self.master.mainloop()
 
 
+<<<<<<< HEAD
 class CRUDOperations(FileManagerInterface):
     def __init__(self, master, main_file):
         super().__init__(master)
         print(main_file)
+=======
+class OpenedFile(FileManagerInterface):
+    def __init__(self, master, file):
+        super().__init__(master)
+        self.file = file
+
+        self.print_file()
+        self.create_back_button()
+
+        # Override
+        self.get_all_drives_buttons()
+        self.build_instruction()
+        self.create_drive_buttons()
+
+    # Override
+    def build_desktop_btn(self):
+        pass
+>>>>>>> 82b6712ac0da262f9339640fcda357cc564643bc
 
     # Override
     def get_all_drives_buttons(self):
@@ -243,11 +271,47 @@ class CRUDOperations(FileManagerInterface):
     def create_drive_buttons(self):
         pass
 
+<<<<<<< HEAD
     def build_desktop_btn(self):
         pass
 
     def desktop_command(self):
         pass
+=======
+    def create_back_button(self):
+        back_button = tk.Button(
+            self.mainframe,
+            text="Back",
+            bg="black",
+            fg="white",
+            font=('Helvetica', 12, 'bold'),
+            command=self.back_logic_button,
+        )
+
+        back_button.grid(
+            row=0, column=0,
+        )
+
+    def print_file(self):
+        file_label = tk.Label(
+            self.mainframe,
+            text=self.file.name,
+            fg="MistyRose4",
+            bg="black",
+            font=('Copperplate Gothic Light', 12),
+        )
+
+        file_label.grid(
+            row=1, column=2,
+        )
+
+    def back_logic_button(self):
+        """Command: Goes back to the main Window"""
+        self.master.destroy()
+        self.master = tk.Tk()
+        self.app = FileManagerInterface(self.master)
+        self.master.mainloop()
+>>>>>>> 82b6712ac0da262f9339640fcda357cc564643bc
 
 
 if __name__ == "__main__":
