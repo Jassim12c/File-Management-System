@@ -1,3 +1,4 @@
+import time
 import string
 import tkinter as tk
 import os
@@ -224,6 +225,7 @@ class OpenedFile(FileManagerInterface):
 
         self.print_file()
         self.create_back_button()
+        self.build_delete_button()
 
         # Override
         self.get_all_drives_buttons()
@@ -271,6 +273,26 @@ class OpenedFile(FileManagerInterface):
         back_button.grid(
             row=0, column=0,
         )
+
+    def build_delete_button(self):
+        del_button = tk.Button(
+            self.mainframe,
+            text="Delete",
+            bg="black",
+            fg="White",
+            font=('Helvetica', 12, 'bold'),
+            command=self.delete_logic,
+        )
+
+        del_button.grid(
+            row=1, column=1
+        )
+
+    def delete_logic(self):
+        self.file.close()
+        time.sleep(1)
+        os.remove(self.file.name)
+        return self.back_logic_button()
 
     def print_file(self):
         file_label = tk.Label(
