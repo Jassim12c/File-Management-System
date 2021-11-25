@@ -32,7 +32,6 @@ class FileManagerInterface:
 
     def __init__(self, master):
         self.row = 0
-        self.check_click = 1
         self.master = master
         self.mainframe = tk.Frame(self.master, background="black")
         self.mainframe.pack(fill=tk.BOTH, expand=True)
@@ -154,19 +153,14 @@ class FileManagerInterface:
     def desktop_command(self):
         """Opens a file of choice from the user's desktop"""
         desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
-        self.file = tk.filedialog.askopenfile(initialdir=desktop, title="Select file", filetypes=(
+        file = tk.filedialog.askopenfile(initialdir=desktop, title="Select file", filetypes=(
             ('all files', '*.*'),
         ))
         self.master.destroy()
         self.master = tk.Tk()
-<<<<<<< HEAD
-        self.app = CRUDOperations(self.master, self.file.name)
-        self.master.mainloop()
-=======
         self.app = OpenedFile(self.master, file)
         self.master.mainloop()
 
->>>>>>> 82b6712ac0da262f9339640fcda357cc564643bc
 
 class InsideDrive(FileManagerInterface):
     def __init__(self, master):
@@ -224,12 +218,6 @@ class InsideDrive(FileManagerInterface):
         self.master.mainloop()
 
 
-<<<<<<< HEAD
-class CRUDOperations(FileManagerInterface):
-    def __init__(self, master, main_file):
-        super().__init__(master)
-        print(main_file)
-=======
 class OpenedFile(FileManagerInterface):
     def __init__(self, master, file):
         super().__init__(master)
@@ -247,7 +235,6 @@ class OpenedFile(FileManagerInterface):
     # Override
     def build_desktop_btn(self):
         pass
->>>>>>> 82b6712ac0da262f9339640fcda357cc564643bc
 
     # Override
     def get_all_drives_buttons(self):
@@ -273,13 +260,6 @@ class OpenedFile(FileManagerInterface):
     def create_drive_buttons(self):
         pass
 
-<<<<<<< HEAD
-    def build_desktop_btn(self):
-        pass
-
-    def desktop_command(self):
-        pass
-=======
     def create_back_button(self):
         back_button = tk.Button(
             self.mainframe,
@@ -333,7 +313,6 @@ class OpenedFile(FileManagerInterface):
         self.master = tk.Tk()
         self.app = FileManagerInterface(self.master)
         self.master.mainloop()
->>>>>>> 82b6712ac0da262f9339640fcda357cc564643bc
 
 
 if __name__ == "__main__":
